@@ -353,7 +353,9 @@ void keyscan()
 
 void main()
 {
+	//≥ı ºªØ
 	lcdinit();
+	//íﬂ√Ë
 	while(1)
 	{
 		keyscan();	

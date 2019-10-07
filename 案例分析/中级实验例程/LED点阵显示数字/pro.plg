@@ -1,0 +1,15 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Project:</h2>
+E:\51单片机\V2.0新版\实验程序\中级实验例程\LED点阵显示数字\pro.uvproj
+Project File Date:  01/12/2019
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling main.c...
+linking...
+Program Size: data=12.0 xdata=0 code=328
+creating hex file from "pro"...
+"pro" - 0 Error(s), 0 Warning(s).

@@ -1,0 +1,119 @@
+C51 COMPILER V9.01   MAIN                                                                  09/15/2019 21:56:12 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil_v502\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          //该板子上的点阵为8*8，只能显示简单的一些汉子，如果要显示真正的汉字
+   2          //通过取模软件取的可以选择16*16点阵的板子
+   3          
+   4          #include<reg51.h>
+   5          #include<intrins.h>
+   6          
+   7          sbit SRCLK=P3^6;
+   8          sbit RCLK=P3^5;
+   9          sbit SER=P3^4;
+  10          
+  11          //--定义要使用的IO口--  P0用户行选//
+  12          #define COMMONPORTS             P0
+  13          
+  14          //--列选通控制--//
+  15          unsigned char code TAB[8]  = {0x7f,0xbf,0xdf,0xef,0xf7,0xfb,0xfd,0xfe};
+  16          
+  17          //--点阵字码--//
+  18          unsigned char code CHARCODE[4][8]=
+  19          {
+  20          
+  21          {0x00,0x3E,0x08,0x3E,0x08,0x3E,0x00,0x00},  //大
+  22          {0x24,0xFF,0x24,0x3E,0x20,0x3E,0x42,0x7E},   //小
+  23          {0x44,0xFF,0x60,0xFD,0x34,0xFF,0x11,0x10},  //回
+  24          
+  25          0x7C,0x48,0x48,0xFF,0x48,0x48,0x7C,0x00  //中
+  26          
+  27          };
+  28          void delay(unsigned int time)
+  29          {
+  30   1        unsigned int i,j;
+  31   1        for(i=0;i<time;i++)
+  32   1          for(j=0;j<121;j++);
+  33   1      }
+  34          
+  35          /*******************************************************************************
+  36          * 函数名         : Hc595SendByte(unsigned char dat)
+  37          * 函数功能                 : 想74H595发送一个字节的数据
+  38          * 输入           : 无
+  39          * 输出           : 无
+  40          *******************************************************************************/
+  41          void Hc595SendByte(unsigned char dat)
+  42          {
+  43   1              unsigned char a;
+  44   1              SRCLK=0;
+  45   1              RCLK=0;
+  46   1              for(a=0;a<8;a++)
+  47   1              {
+  48   2                      SER=dat>>7;
+  49   2                      dat<<=1;
+  50   2      
+  51   2                      SRCLK=1;
+  52   2                      _nop_();
+  53   2                      _nop_();
+  54   2                      SRCLK=0;        
+  55   2              }
+C51 COMPILER V9.01   MAIN                                                                  09/15/2019 21:56:12 PAGE 2   
+
+  56   1      
+  57   1              RCLK=1;
+  58   1              _nop_();
+  59   1              _nop_();
+  60   1              RCLK=0;
+  61   1      }
+  62          /*******************************************************************************
+  63          * 函数名         : main
+  64          * 函数功能                 : 主函数
+  65          * 输入           : 无
+  66          * 输出           : 无
+  67          *******************************************************************************/
+  68          
+  69          void main()
+  70          {       
+  71   1              unsigned char tab, j;
+  72   1              unsigned int  i;
+  73   1      
+  74   1              while(1)
+  75   1              {       
+  76   2                      for(i= 0; i<50; i++ )   //两个字之间的扫描间隔时间
+  77   2                      {
+  78   3                              for(tab=0;tab<8;tab++)
+  79   3                              {       
+  80   4      
+  81   4                                      Hc595SendByte(0x00);                         //消隐                                                                                                                             
+  82   4                                      COMMONPORTS     = TAB[tab];                              //输出字码     
+  83   4                                      Hc595SendByte(CHARCODE[j][tab]);        
+  84   4                                      delay(2);               
+  85   4                              }
+  86   3                               
+  87   3                      }
+  88   2                      j++;
+  89   2                      if(j == 4)
+  90   2                      {
+  91   3                              j = 0;
+  92   3                      }
+  93   2              }       
+  94   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    160    ----
+   CONSTANT SIZE    =     40    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,1 @@
+"led1602.c" OPTIMIZE (8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\led1602.lst) TABS (2) OBJECT(.\Objects\led1602.obj)

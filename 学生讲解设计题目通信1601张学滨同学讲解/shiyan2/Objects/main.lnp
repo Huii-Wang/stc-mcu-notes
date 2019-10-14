@@ -1,0 +1,6 @@
+".\Objects\STARTUP.obj",
+".\Objects\led1602.obj",
+".\Objects\main.obj" 
+TO ".\Objects\main" 
+PRINT(".\Listings\main.m51") RAMSIZE(256) 
+CODE( 0X0000-0XEFF8 )
